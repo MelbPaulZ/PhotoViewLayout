@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -100,9 +101,11 @@ public class PhotoLayout extends LinearLayout {
         width = MeasureSpec.getSize(widthMeasureSpec);
         height = MeasureSpec.getSize(heightMeasureSpec);
 
-        rl.measure(MeasureSpec.makeMeasureSpec(width/3, MeasureSpec.EXACTLY),
+//        rl.measure(MeasureSpec.makeMeasureSpec(width/3, MeasureSpec.EXACTLY),
+//                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+        rl.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-//        Log.i(TAG, "onMeasure: " + width + " " + height + " "+ squareWidth + " " + squareHeight);
+        Log.i(TAG, "onMeasure: " + width + " " + height );
     }
 
     @Override
