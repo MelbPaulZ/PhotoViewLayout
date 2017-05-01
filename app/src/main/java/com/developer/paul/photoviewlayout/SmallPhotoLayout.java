@@ -53,7 +53,8 @@ public class SmallPhotoLayout extends GridLayout {
     }
 
     private void updatePhotos(){
-        for(int i = 0; i < photoUrlList.size(); i++){
+        int len = photoUrlList.size()>4 ? 4 : photoUrlList.size();
+        for(int i = 0; i < len; i++){
             Picasso.with(getContext()).load(photoUrlList.get(i)).error(R.drawable.location).fit().centerCrop().into(imageViewList.get(i));
         }
     }

@@ -10,11 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="30dp" />
 
-    <com.developer.paul.photoviewlayout.PhotoLayout
-        android:id="@+id/photo_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-    </com.developer.paul.photoviewlayout.PhotoLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

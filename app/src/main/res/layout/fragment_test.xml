@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.developer.paul.photoviewlayout.test.TestViewModel"/>
+    </data>
+    <com.developer.paul.photoviewlayout.PhotoLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:photoUrls="@{vm.urls.photos}">
+
+    </com.developer.paul.photoviewlayout.PhotoLayout>
+</layout>
