@@ -8,7 +8,8 @@
     <com.developer.paul.photoviewlayout.PhotoLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:photoUrls="@{vm.urls.photos}">
+        app:photoUrls="@{vm.urls.photos}"
+        app:imageClickListener="@{vm.imageClickListener}">
 
     </com.developer.paul.photoviewlayout.PhotoLayout>
 </layout>

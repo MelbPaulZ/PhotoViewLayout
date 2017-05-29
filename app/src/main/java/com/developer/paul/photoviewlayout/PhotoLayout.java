@@ -3,7 +3,6 @@ package com.developer.paul.photoviewlayout;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,9 +22,10 @@ public class PhotoLayout extends LinearLayout {
     private int height, width;
     private String TAG = "PhotoLayout";
 
-    private List<ImageView> imgList;
-    private SmallPhotoLayout rl;
+    private List<ImageView> bigImageList;
+    private SmallPhotoLayout smallPhotoLayout;
     private List<String> photoUrlList;
+    private ImageClickListener imageClickListener;
 
 
     public PhotoLayout(Context context) {
@@ -41,21 +41,20 @@ public class PhotoLayout extends LinearLayout {
     private void init(){
         setOrientation(LinearLayout.HORIZONTAL);
 
-        imgList = new ArrayList<>();
+        bigImageList = new ArrayList<>();
         initImageViews();
 
-        rl = new SmallPhotoLayout(getContext());
+        smallPhotoLayout = new SmallPhotoLayout(getContext());
         LayoutParams rlLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rlLayoutParams.weight = 1;
-        rl.setLayoutParams(rlLayoutParams);
-        rl.setOnClickListener(new OnClickListener() {
+        smallPhotoLayout.setLayoutParams(rlLayoutParams);
+        smallPhotoLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "click small photos", Toast.LENGTH_SHORT).show();
             }
         });
-
-        addView(rl);
+        addView(smallPhotoLayout);
     }
 
     private void initImageViews(){
@@ -67,10 +66,25 @@ public class PhotoLayout extends LinearLayout {
             imgLayoutParams.setMargins(10,10,10,10);
             img.setLayoutParams(imgLayoutParams);
             Picasso.with(getContext()).load(R.drawable.gray).into(img);
-            imgList.add(img);
+            bigImageList.add(img);
             addView(img);
         }
     }
+
+    public void setImageClickListener(ImageClickListener imageClickListener){
+        this.imageClickListener = imageClickListener;
+        updateImageClickListeners();
+    }
+
+    private void updateImageClickListeners(){
+        for (int i = 0 ; i < 2 ; i++){
+            String url = photoUrlList.get(i);
+            bigImageList.get(i).setOnClickListener(imageClickListener.onBigImageClick(url));
+        }
+
+        smallPhotoLayout.setImageClickListener(imageClickListener);
+    }
+
 
     public void setPhotoUrlList(List<String> photoUrlList) {
         this.photoUrlList = photoUrlList;
@@ -81,17 +95,17 @@ public class PhotoLayout extends LinearLayout {
         int len = photoUrlList.size() > 2? 2: photoUrlList.size();
         for(int i = 0; i < len; i++){
             final String url = photoUrlList.get(i);
-            imgList.get(i).setOnClickListener(new OnClickListener() {
+            bigImageList.get(i).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getContext(), "click image : " + url, Toast.LENGTH_SHORT).show();
                 }
             });
-            Picasso.with(getContext()).load(photoUrlList.get(i)).error(R.drawable.location).fit().centerCrop().into(imgList.get(i));
+            Picasso.with(getContext()).load(photoUrlList.get(i)).error(R.drawable.location).fit().centerCrop().into(bigImageList.get(i));
         }
 
         if (photoUrlList.size()>2){
-            rl.setPhotoUrlList(photoUrlList.subList(2, photoUrlList.size()));
+            smallPhotoLayout.setPhotoUrlList(photoUrlList.subList(2, photoUrlList.size()));
         }
     }
 
@@ -102,11 +116,8 @@ public class PhotoLayout extends LinearLayout {
         width = MeasureSpec.getSize(widthMeasureSpec);
         height = MeasureSpec.getSize(heightMeasureSpec);
 
-//        rl.measure(MeasureSpec.makeMeasureSpec(width/3, MeasureSpec.EXACTLY),
-//                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-        rl.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+        smallPhotoLayout.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-        Log.i(TAG, "onMeasure: " + width + " " + height );
     }
 
     @Override
@@ -115,8 +126,12 @@ public class PhotoLayout extends LinearLayout {
         getLayoutParams().height = width/3 > height? height : width/3;
 
         super.onLayout(changed, l, t, r, b);
-//        Log.i(TAG, "onLayout: " + l + " " + t + " " + squareWidth + " " + squareHeight);
 
-        rl.layout(width * 2/3, 0, r, b);
+        smallPhotoLayout.layout(width * 2/3, 0, r, b);
+    }
+
+    public interface ImageClickListener{
+        OnClickListener onBigImageClick(String url);
+        OnClickListener onSmallImageClick(String url);
     }
 }

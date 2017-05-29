@@ -21,6 +21,7 @@ public class SmallPhotoLayout extends GridLayout {
     private List<String> photoUrlList;
     private int width, height;
     private int squareWidth, squareHeight;
+    private PhotoLayout.ImageClickListener imageClickListener;
 
     public SmallPhotoLayout(Context context) {
         super(context);
@@ -52,6 +53,21 @@ public class SmallPhotoLayout extends GridLayout {
         updatePhotos();
     }
 
+    public void setImageClickListener(PhotoLayout.ImageClickListener imageClickListener) {
+        this.imageClickListener = imageClickListener;
+        updateClickListener();
+    }
+
+    private void updateClickListener(){
+        for (int i = 0 ; i < imageViewList.size() ; i ++){
+            if (i >= photoUrlList.size()){
+                return;
+            }
+            String url = photoUrlList.get(i);
+            imageViewList.get(i).setOnClickListener(imageClickListener.onSmallImageClick(url));
+        }
+    }
+
     private void updatePhotos(){
         int len = photoUrlList.size()>4 ? 4 : photoUrlList.size();
         for(int i = 0; i < len; i++){
@@ -75,14 +91,6 @@ public class SmallPhotoLayout extends GridLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-//        Log.i(TAG, "onLayout: " + l + " " + t + " " + r + " " + b);
-//        imageViewList.get(0).layout(0, 0, width/2, height/2);
-//
-//        imageViewList.get(1).layout(width/2, 0, width, height/2);
-//
-//        imageViewList.get(2).layout(0, height/2, width/2, height);
-//
-//        imageViewList.get(3).layout(width/2, height/2, width, height);
         imageViewList.get(0).layout(0, 0, squareWidth/2, squareHeight/2);
         imageViewList.get(1).layout(squareWidth/2, 0, squareWidth, squareHeight/2);
         imageViewList.get(2).layout(0, squareHeight/2, squareWidth/2, squareHeight);

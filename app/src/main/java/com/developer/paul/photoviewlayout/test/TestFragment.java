@@ -43,5 +43,6 @@ public class TestFragment extends Fragment {
         urls.add("http://zone1.aqusagtechnologi.netdna-cdn.com/wp-content/uploads/2015/07/url1.jpg");
         Urls photos = new Urls(urls);
         viewModel.setUrls(photos);
+
     }
 }
